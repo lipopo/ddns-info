@@ -33,14 +33,14 @@ class DDNSClient(object):
         return signature
 
     def version(self):
-        res = requests.get(urlparse.urljoin(self.endpoint, self.api_prefix + '/version'))
+        res = requests.get(self.endpoint + self.api_prefix + '/version')
         if res.status_code == 200:
             return res.json()
         else:
             return {'meta': {'code': res.status_code}}
     
     def ip(self):
-        res = requests.get(urlparse.urljoin(self.endpoint, self.api_prefix + '/ip'))
+        res = requests.get(self.endpoint + self.api_prefix + '/ip')
         if res.status_code == 200:
             return res.json()
         else:
@@ -48,9 +48,7 @@ class DDNSClient(object):
     
     def create_resource(self, mac_id, ip_address, domain_url):
         res = requests.post(
-            urlparse.urljoin(
-                self.endpoint, self.api_prefix + '/create_resource'
-            ),
+            self.endpoint + self.api_prefix + '/create_resource',
             json={
                 'mac_id': mac_id,
                 'ip_address': ip_address,
@@ -66,9 +64,7 @@ class DDNSClient(object):
 
     def update_ip(self, mac_id, ip_address, domain_url):
         res = requests.post(
-            urlparse.urljoin(
-                self.endpoint, self.api_prefix + '/update_ip'
-            ),
+            self.endpoint + self.api_prefix + '/update_ip',
             json={
                 'mac_id': mac_id,
                 'ip_address': ip_address,
