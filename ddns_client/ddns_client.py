@@ -12,7 +12,7 @@ class DDNSClient(object):
 
     def __init__(self, endpoint, sig_key, sig_value):
 
-        if not endpoint.endwith('/'):
+        if not endpoint.endswith('/'):
             endpoint += '/'
         
         self.endpoint = endpoint
