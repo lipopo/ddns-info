@@ -1,8 +1,7 @@
 # -*- coding: utf8 -*-
 import hmac
 import hashlib
-
-import urllib
+import urlparse
 
 import requests
 
@@ -12,6 +11,10 @@ class DDNSClient(object):
     api_prefix = '/api/v1'
 
     def __init__(self, endpoint, sig_key, sig_value):
+
+        if not endpoint.endwith('/'):
+            endpoint += '/'
+        
         self.endpoint = endpoint
         self.sig_key = sig_key
         self.sig_value = sig_value
@@ -30,14 +33,14 @@ class DDNSClient(object):
         return signature
 
     def version(self):
-        res = requests.get(urllib.basejoin(self.endpoint, self.api_prefix + '/version'))
+        res = requests.get(urlparse.urljoin(self.endpoint, self.api_prefix + '/version'))
         if res.status_code == 200:
             return res.json()
         else:
             return {'meta': {'code': res.status_code}}
     
     def ip(self):
-        res = requests.get(urllib.basejoin(self.endpoint, self.api_prefix + '/ip'))
+        res = requests.get(urlparse.urljoin(self.endpoint, self.api_prefix + '/ip'))
         if res.status_code == 200:
             return res.json()
         else:
@@ -45,7 +48,7 @@ class DDNSClient(object):
     
     def create_resource(self, mac_id, ip_address, domain_url):
         res = requests.post(
-            urllib.basejoin(
+            urlparse.urljoin(
                 self.endpoint, self.api_prefix + '/create_resource'
             ),
             json={
@@ -63,7 +66,7 @@ class DDNSClient(object):
 
     def update_ip(self, mac_id, ip_address, domain_url):
         res = requests.post(
-            urllib.basejoin(
+            urlparse.urljoin(
                 self.endpoint, self.api_prefix + '/update_ip'
             ),
             json={
